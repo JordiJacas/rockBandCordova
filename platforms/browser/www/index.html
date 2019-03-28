@@ -22,37 +22,13 @@
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Artistas</title>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/artits.js"></script>
   </head>
   <body>
     <b>Artista:</b>
     <input type="text" id="name" value="">
     <button id="add" onClick="searchArtist()">Buscar</button>
     <ul id="list"></ul>
-    <script type="text/javascript">
-
-      function searchArtist() {
-        $("li").remove();
-
-        var name = $("#name").val();
-
-          $.ajax({
-            method: "GET",
-            url: "https://musicbrainz.org/ws/2/artist?query="+name,
-            dataType: "json",
-
-          }).done(function (msg) {
-
-            for(var item in msg.artists) {
-              var node = $("<li>"+JSON.stringify(msg.artists[item].name).substr(1, msg.artists[item].name.length)+"</li>");
-              $("#list").append(node);
-            };
-
-          }).fail(function () {
-          	alert("ERROR");
-          });
-
-          $("#name").val("");
-      }
-    </script>
   </body>
 </html>
