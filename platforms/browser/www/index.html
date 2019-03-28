@@ -21,41 +21,37 @@
   <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>Lista Artistas</title>
+    <title>Artistas</title>
   </head>
   <body>
-    <b>Nombre del artista:</b>
-    <input type="text" id="txtName" value="">
-    <button id="add" onClick="addArtists()">Buscar</button>
+    <b>Artista:</b>
+    <input type="text" id="name" value="">
+    <button id="add" onClick="searchArtist()">Buscar</button>
     <ul id="list"></ul>
     <script type="text/javascript">
-      var check = 0;
-      function addArtists() {
-        var query = $("#txtName").val();
-        if (check == 0 && query != "") {
+
+      function searchArtist() {
+        $("li").remove();
+
+        var name = $("#name").val();
+
           $.ajax({
             method: "GET",
-            url: "https://musicbrainz.org/ws/2/artist?query="+query,
+            url: "https://musicbrainz.org/ws/2/artist?query="+name,
             dataType: "json",
+
           }).done(function (msg) {
+
             for(var item in msg.artists) {
-              //console.log(msg.artists[item]);
               var node = $("<li>"+JSON.stringify(msg.artists[item].name).substr(1, msg.artists[item].name.length)+"</li>");
               $("#list").append(node);
-              check = 1;
             };
+
           }).fail(function () {
           	alert("ERROR");
           });
-          //Para borrar el texto del input
-          $("#txtName").val("");
-        } else {
-          if (check == 1 && query != ""){
-            alert("Ya has añadido los datos a la lista!");
-          } else {
-            alert("Introduce el nombre de un artista para poder buscarlo en musicbrainz!")
-          }
-        }
+
+          $("#name").val("");
       }
     </script>
   </body>
